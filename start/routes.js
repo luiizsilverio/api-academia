@@ -25,13 +25,13 @@ Route.get('/', () => {
 // Route.put('/users/:id', 'UserController.update')
 // Route.delete('/users/:id', 'UserController.destroy')
 
-Route.resource('/users', 'UserController')
+Route.resource('users', 'UserController')
   .apiOnly()
   .validator(new Map([
-  [['users.store'], ['User']],
-  [['users.update'], ['User']]
+    ['users.store', 'User'],
+    ['users.update', 'User']
 ]))
 
-Route.resource('/clients', 'ClientController').apiOnly()
-Route.resource('/exercises', 'ExerciseController').apiOnly()
-Route.resource('/trainings', 'TrainingController').apiOnly()
+Route.resource('clients', 'ClientController').apiOnly()
+Route.resource('exercises', 'ExerciseController').apiOnly()
+Route.resource('trainings', 'TrainingController').apiOnly()
