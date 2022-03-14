@@ -19,7 +19,7 @@ class TrainingController {
       "client_id",
       "name",
       "obs",
-      "exercises"
+      "exercises"  // array
     ])
 
     const training = await Training.create(data)
@@ -37,7 +37,7 @@ class TrainingController {
       "client_id",
       "name",
       "obs",
-      "exercises"
+      "exercises"  // array
     ])
 
 
