@@ -18,31 +18,53 @@ class UserController {
     // const data = request.body
 
     // request.only permite especificar os campos do corpo da requisição
-    const data = request.only([
+    const { permissions, roles, ...data } = request.only([
       "name",
       "username",
       "email",
       "password",
-      "type_user_id"
+      "type_user_id",
+      "permissions",
+      "roles"
     ])
 
     const user = await User.create(data)
+
+    if (permissions) {
+      await user.permissions().attach(permissions)
+    }
+    if (roles) {
+      await user.roles().attach(roles)
+    }
+
+    await user.loadMany(['roles', 'permissions'])
     return user
   }
 
   async update ({ params, request }) {
     const user = await User.findOrFail(params.id)
 
-    const data = request.only([
+    const { permissions, roles, ...data } = request.only([
       "name",
       "username",
       "email",
       "password",
-      "type_user_id"
+      "type_user_id",
+      "permissions",
+      "roles"
     ])
 
     user.merge(data) // substitui os dados
     await user.save()
+
+    if (permissions) {
+      await user.permissions().sync(permissions)
+    }
+    if (roles) {
+      await user.roles().sync(roles)
+    }
+
+    await user.loadMany(['roles', 'permissions'])
     return user
   }
 

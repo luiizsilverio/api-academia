@@ -47,3 +47,11 @@ Route.resource('exercises', 'ExerciseController')
 Route.resource('trainings', 'TrainingController')
   .apiOnly()
   .middleware('auth:jwt')
+
+Route.resource('permissions', 'PermissionController')
+  .apiOnly()
+  .middleware('auth:jwt')
+
+Route.resource('roles', 'RoleController')
+  .apiOnly()
+  .middleware('auth:jwt')
