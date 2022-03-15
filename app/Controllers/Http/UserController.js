@@ -9,7 +9,8 @@ class UserController {
 
   async show({ params }) {
     const user = await User.findOrFail(params.id)
-    await user.load('typeUser') // incorpora os dados da tabela relacionada
+    // await user.load('typeUser') // incorpora os dados da tabela relacionada
+    await user.loadMany(['typeUser', 'permissions', 'roles'])
     return user
   }
 

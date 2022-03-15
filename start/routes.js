@@ -34,7 +34,7 @@ Route.resource('users', 'UserController')
     ['users.store', 'User'],
     ['users.update', 'User']
   ]))
-  .middleware('auth:jwt')
+  .middleware(['auth:jwt', 'is:manager'])
 
 Route.resource('clients', 'ClientController')
   .apiOnly()
@@ -42,16 +42,16 @@ Route.resource('clients', 'ClientController')
 
 Route.resource('exercises', 'ExerciseController')
   .apiOnly()
-  .middleware('auth:jwt')
+  .middleware(['auth:jwt', 'can:ger_exercises'])
 
 Route.resource('trainings', 'TrainingController')
   .apiOnly()
-  .middleware('auth:jwt')
+  .middleware(['auth:jwt', 'is:manager'])
 
 Route.resource('permissions', 'PermissionController')
   .apiOnly()
-  .middleware('auth:jwt')
+  .middleware(['auth:jwt', 'is:manager'])
 
 Route.resource('roles', 'RoleController')
   .apiOnly()
-  .middleware('auth:jwt')
+  .middleware(['auth:jwt', 'is:manager'])
