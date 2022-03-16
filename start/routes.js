@@ -42,7 +42,7 @@ Route.resource('clients', 'ClientController')
 
 Route.resource('exercises', 'ExerciseController')
   .apiOnly()
-  .middleware(['auth:jwt', 'can:ger_exercises'])
+  .middleware(['auth:jwt', 'can:ger_exercises', 'audit'])
 
 Route.resource('trainings', 'TrainingController')
   .apiOnly()

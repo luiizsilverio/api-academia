@@ -10,6 +10,9 @@ class ClientController {
   async show({ params }) {
     const client = await Client.findOrFail(params.id)
     await client.load('user') // incorpora os dados da tabela relacionada
+
+    // para obter os dados de user:
+    //const user = client.getRelated('user')
     return client
   }
 
