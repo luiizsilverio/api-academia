@@ -188,7 +188,7 @@ module.exports = {
     | Available drivers are: `file` and `console`.
     |
     */
-    transport: 'console',
+    transport: 'file',
 
     /*
     |--------------------------------------------------------------------------
@@ -200,8 +200,9 @@ module.exports = {
     |
     */
     console: {
-      driver: 'console',
-      name: 'adonis-app',
+      driver: 'file',
+      name: 'api-academia',
+      filename: 'academia.log',
       level: 'info'
     },
 
@@ -218,8 +219,8 @@ module.exports = {
     */
     file: {
       driver: 'file',
-      name: 'adonis-app',
-      filename: 'adonis.log',
+      name: 'api-academia',
+      filename: 'academia.log',
       level: 'info'
     }
   },
