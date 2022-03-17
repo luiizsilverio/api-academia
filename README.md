@@ -15,7 +15,7 @@
 * [Contato](#email-contato)
 
 ## Sobre a aplicação
-API desenvolvida em __AdonisJS__ que implementa um CRUD com banco de dados __MySQL__.<br />
+API desenvolvida em __Adonis.js__ que implementa um CRUD com banco de dados __MySQL__.<br />
 Permite a inclusão de usuários, clientes, exercícios, treinos e produtos, além de alteração, exclusão e consulta.<br />
 Possui autenticação JWT, upload de imagens, geração de Log, controle de permissões (Roles e Permissions) e middlewares.<br />
 Desenvolvido durante o curso [Criando uma REST API com adonis.js: do básico ao avançado](https://www.udemy.com/course/criando-rest-api-com-adonisjs-do-basico-ao-avancado), do prof. Augusto Gehrke.<br />
@@ -71,6 +71,10 @@ $ git clone https://github.com/luiizsilverio/api-academia.git
 
 # Execute yarn para instalar as dependências (ou npm install)
 $ yarn
+
+# Renomeie o arquivo .env.example para .env
+# informe a APP_KEY. Caso não tenha, gere uma chave com o comando:
+adonis key:generate
 
 # Para iniciar a aplicação
 $ yarn dev
