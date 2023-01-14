@@ -1,5 +1,9 @@
 'use strict'
 
+const fs = use("fs");
+const path = use("path");
+const crypto = use("crypto");
+
 const Product = use("App/Models/Product")
 const Logger = use("Logger")
 const Helpers = use("Helpers")
@@ -43,7 +47,7 @@ class ProductController {
     return product
   }
 
-  async update ({ params, request }) {
+  async update ({ params, request, response }) {
     const data = request.only([
       "name",
       "price",
@@ -59,13 +63,28 @@ class ProductController {
 
     // verifica se já existe uma imagem com esse nome
     if (photo) {
-      const image = await Product.findBy('url_image', photo.clientName)
+      const pasta = Helpers.publicPath('products');
+      const oldPhoto = product.url_image;
 
-      if (image) {
-        return response.status(400).send({ error: "Imagem com nome duplicado."})
+      // apaga a imagem anterior
+      if (oldPhoto) {
+        const file = path.resolve(pasta, oldPhoto);
+        fs.rmSync(file, {force: true});
       }
 
-      await photo.move(Helpers.publicPath('products'))
+      // cria um nome de arquivo com hash
+      const hash = crypto.randomBytes(6).toString('hex')
+      const fileName = `${hash}-${photo.clientName}`;
+
+      // renomeia e copia o arquivo de imagem para a pasta public/products
+      // await photo.move(pasta);
+      await photo.move(pasta, { name: fileName });
+
+      if (!photo.moved()) {
+        console.log(photo.error())
+        return response.status(500).send({ message: "Erro de imagem", error: photo.error().message });
+      }
+
       data.url_image = photo.clientName
     }
 
