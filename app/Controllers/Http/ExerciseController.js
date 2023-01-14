@@ -87,7 +87,7 @@ class ExerciseController {
       const hash = crypto.randomBytes(6).toString('hex')
       const fileName = `${hash}-${photo.clientName}`;
 
-      // renomeia e copia o arquivo de imagem para a pasta public/products
+      // renomeia e copia o arquivo de imagem para a pasta public/exercises
       await photo.move(pasta, { name: fileName });
 
       if (!photo.moved()) {
