@@ -1,5 +1,9 @@
 'use strict'
 
+const fs = use("fs");
+const path = use("path");
+const crypto = use("crypto");
+
 const Exercise = use("App/Models/Exercise")
 const Helpers = use("Helpers")
 
@@ -31,16 +35,22 @@ class ExerciseController {
       size: '2mb',  // tamanho máximo
     })
 
-    // verifica se já existe uma imagem com esse nome
     if (photo) {
-      const image = await Exercise.findBy('url_image', photo.clientName)
+      // cria um nome de arquivo com hash
+      const pasta = Helpers.publicPath('exercises');
+      const hash = crypto.randomBytes(6).toString('hex')
+      const fileName = `${hash}-${photo.clientName}`;
 
-      if (image) {
-        return response.status(400).send({ error: "Imagem com nome duplicado."})
+      await photo.move(pasta, { name: fileName });
+
+      if (!photo.moved()) {
+        return response.status(500).send({
+          message: "Erro na imagem",
+          error: photo.error().message
+        });
       }
 
-      await photo.move(Helpers.publicPath('exercises'))
-      data.url_image = photo.clientName
+      data.url_image = fileName;
     }
 
     // console.log(request.body.action_by)
@@ -63,16 +73,31 @@ class ExerciseController {
       size: '2mb',  // tamanho máximo
     })
 
-    // verifica se já existe uma imagem com esse nome
     if (photo) {
-      const image = await Exercise.findBy('url_image', photo.clientName)
+      const pasta = Helpers.publicPath('exercises');
+      const oldPhoto = exercise.url_image;
 
-      if (image) {
-        return response.status(400).send({ error: "Imagem com nome duplicado."})
+      // apaga a imagem anterior
+      if (oldPhoto) {
+        const file = path.resolve(pasta, oldPhoto);
+        fs.rmSync(file, {force: true});
       }
 
-      await photo.move(Helpers.publicPath('exercises'))
-      data.url_image = photo.clientName
+      // cria um nome de arquivo com hash
+      const hash = crypto.randomBytes(6).toString('hex')
+      const fileName = `${hash}-${photo.clientName}`;
+
+      // renomeia e copia o arquivo de imagem para a pasta public/products
+      await photo.move(pasta, { name: fileName });
+
+      if (!photo.moved()) {
+        return response.status(500).send({
+          message: "Erro na imagem",
+          error: photo.error().message
+        });
+      }
+
+      data.url_image = fileName;
     }
 
     exercise.merge(data)

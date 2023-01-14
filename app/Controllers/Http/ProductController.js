@@ -25,16 +25,22 @@ class ProductController {
       size: '2mb',  // tamanho máximo
     })
 
-    // verifica se já existe uma imagem com esse nome
     if (photo) {
-      const image = await Product.findBy('url_image', photo.clientName)
+      // cria um nome de arquivo com hash
+      const pasta = Helpers.publicPath('products');
+      const hash = crypto.randomBytes(6).toString('hex')
+      const fileName = `${hash}-${photo.clientName}`;
 
-      if (image) {
-        return response.status(400).send({ error: "Imagem com nome duplicado."})
+      await photo.move(pasta, { name: fileName });
+
+      if (!photo.moved()) {
+        return response.status(500).send({
+          message: "Erro na imagem",
+          error: photo.error().message
+        });
       }
 
-      await photo.move(Helpers.publicPath('products'))
-      data.url_image = photo.clientName
+      data.url_image = fileName;
     }
 
     const product = await Product.create(data)
@@ -61,7 +67,6 @@ class ProductController {
       size: '2mb',  // tamanho máximo
     })
 
-    // verifica se já existe uma imagem com esse nome
     if (photo) {
       const pasta = Helpers.publicPath('products');
       const oldPhoto = product.url_image;
@@ -81,11 +86,13 @@ class ProductController {
       await photo.move(pasta, { name: fileName });
 
       if (!photo.moved()) {
-        console.log(photo.error())
-        return response.status(500).send({ message: "Erro de imagem", error: photo.error().message });
+        return response.status(500).send({
+          message: "Erro na imagem",
+          error: photo.error().message
+        });
       }
 
-      data.url_image = photo.clientName
+      data.url_image = fileName;
     }
 
     product.merge(data)
