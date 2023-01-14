@@ -57,6 +57,24 @@ class ExerciseController {
     ])
 
     const exercise = await Exercise.findOrFail(params.id)
+
+    const photo = request.file('image', {
+      types: ['image'], // só aceita imagens
+      size: '2mb',  // tamanho máximo
+    })
+
+    // verifica se já existe uma imagem com esse nome
+    if (photo) {
+      const image = await Exercise.findBy('url_image', photo.clientName)
+
+      if (image) {
+        return response.status(400).send({ error: "Imagem com nome duplicado."})
+      }
+
+      await photo.move(Helpers.publicPath('exercises'))
+      data.url_image = photo.clientName
+    }
+
     exercise.merge(data)
     await exercise.save()
     return exercise

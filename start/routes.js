@@ -48,10 +48,19 @@ Route.resource('trainings', 'TrainingController')
   .apiOnly()
   .middleware(['auth:jwt', 'is:manager'])
 
+/*
 Route.get('/products', 'ProductController.index')
   .middleware('auth:jwt')
 
 Route.post('/products', 'ProductController.store')
+  .middleware('auth:jwt')
+
+Route.delete('/products/:id', 'ProductController.destroy')
+  .middleware('auth:jwt')
+*/
+
+Route.resource('products', 'ProductController')
+  .apiOnly()
   .middleware('auth:jwt')
 
 Route.resource('permissions', 'PermissionController')
