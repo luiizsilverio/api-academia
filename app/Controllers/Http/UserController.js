@@ -1,5 +1,6 @@
 'use strict'
 
+const Hash = use('Hash')
 const User = use('App/Models/User')
 
 class UserController {
@@ -12,6 +13,34 @@ class UserController {
     // await user.load('typeUser') // incorpora os dados da tabela relacionada
     await user.loadMany(['typeUser', 'permissions', 'roles'])
     return user
+  }
+
+  async findByName({ params, response }) {
+    // const user = await User.findOrFail('username', params.username);
+    const user = await User.query()
+      .where('username', params.username)
+      .select('id', 'username', 'email', 'password')
+      .first();
+
+    if (user) {
+      const isSame = await Hash.verify(
+        params.password,
+        user.password
+      );
+
+      if (!isSame) {
+        return response.status(400).send({
+          message: "Nome ou senha incorreta"
+        });
+      }
+
+      return user
+
+    } else {
+      return response.status(400).send({
+        message: "Nome ou senha incorreta"
+      });
+    }
   }
 
   async store({ request }) {
