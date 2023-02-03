@@ -1,6 +1,15 @@
 'use strict'
 
 module.exports = {
+  enabled: true,
+  origin: true, //'http://127.0.0.1:5500',
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE'],
+  headers: true,
+  exposeHeaders: false,
+  credentials: false,
+  maxAge: 90
+}
+
   /*
   |--------------------------------------------------------------------------
   | Origin
@@ -15,10 +24,6 @@ module.exports = {
   | String: * - A wildcard to allow current request origin
   | Function - Receives the current origin and should return one of the above values.
   |
-  */
-  origin: true,
-
-  /*
   |--------------------------------------------------------------------------
   | Methods
   |--------------------------------------------------------------------------
@@ -28,10 +33,6 @@ module.exports = {
   | String - Comma separated list of allowed methods
   | Array - An array of allowed methods
   |
-  */
-  methods: ['GET', 'PUT', 'PATCH', 'POST', 'DELETE'],
-
-  /*
   |--------------------------------------------------------------------------
   | Headers
   |--------------------------------------------------------------------------
@@ -46,10 +47,6 @@ module.exports = {
   | String: * - A wildcard to allow current request headers
   | Function - Receives the current header and should return one of the above values.
   |
-  */
-  headers: true,
-
-  /*
   |--------------------------------------------------------------------------
   | Expose Headers
   |--------------------------------------------------------------------------
@@ -61,10 +58,6 @@ module.exports = {
   | String: Comma separated list of allowed headers
   | Array - An array of allowed headers
   |
-  */
-  exposeHeaders: false,
-
-  /*
   |--------------------------------------------------------------------------
   | Credentials
   |--------------------------------------------------------------------------
@@ -72,10 +65,6 @@ module.exports = {
   | Define Access-Control-Allow-Credentials header. It should always be a
   | boolean.
   |
-  */
-  credentials: false,
-
-  /*
   |--------------------------------------------------------------------------
   | MaxAge
   |--------------------------------------------------------------------------
@@ -83,5 +72,3 @@ module.exports = {
   | Define Access-Control-Allow-Max-Age
   |
   */
-  maxAge: 90
-}

@@ -63,7 +63,7 @@ Route.resource('clients', 'ClientController')
 
 Route.resource('exercises', 'ExerciseController')
   .apiOnly()
-  .middleware(['auth:jwt', 'audit'])
+  .middleware(['auth:jwt', 'audit']) // desativei devido a problema de CORs
   // .middleware(['auth:jwt', 'can:ger_exercises', 'audit'])
 
 Route.resource('trainings', 'TrainingController')
