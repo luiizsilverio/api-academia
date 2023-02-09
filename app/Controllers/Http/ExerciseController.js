@@ -10,7 +10,7 @@ const Helpers = use("Helpers")
 class ExerciseController {
   async index({ request, response }) {
     console.log(request.body.action_by)
-    //// console.log(request.input('action_by'))
+    // console.log(request.input('action_by'))
     return await Exercise.all();
   }
 
